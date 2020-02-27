@@ -1,6 +1,6 @@
 #include "Intersection.h"
 
-Intersection::Intersection(float width, int duration) {
+Intersection::Intersection(float width, float duration) {
 	this->width = width;
 	this->duration = duration;
 }
@@ -8,14 +8,7 @@ Intersection::Intersection(float width, int duration) {
 float Intersection::getWidth() {
 	return width;
 };
-void Intersection::setWidth(float width) {
-	this->width = width;
-};
 
-int Intersection::getDuration() {
+float Intersection::getDuration() {
 	return duration;
-};
-
-void Intersection::setDuration(int duration) {
-	this->duration = duration;
 };

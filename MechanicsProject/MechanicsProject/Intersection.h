@@ -2,13 +2,11 @@
 class Intersection
 {
 private:
-	float width = 0;
-	int duration = 0;
+	float width = 0.0f;
+	float duration = 0.0f;
 public:
 	float getWidth();
-	void setWidth(float width);
-	int getDuration();
-	void setDuration(int duration);
-	Intersection(float width, int duration);
+	float getDuration();
+	Intersection(float width, float duration);
 };
 
