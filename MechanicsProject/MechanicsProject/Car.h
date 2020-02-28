@@ -6,15 +6,21 @@ private:
 	float positiveAcc = 0;
 	float negativeAcc = 0;
 	float distanceToIntersection = 0;
+	float maxSpeed = 0;
 public:
 	float getSpeed();
+	void setSpeed(float speed);
 	float getPositiveAcc();
+	void setPositiveAcc(float positiveAcc);
 	float getNegativeAcc();
+	void setNegativeAcc(float negativeAcc);
+	float getDistanceToIntersection();
+	void setDistanceToIntersection(float distance);
+	float getMaxSpeed();
+	void setMaxSpeed(float maxSpeed);
+
 	float positiveDistance(float time);
 	float negativeDistance();
-	float getDistanceToIntersection();
 	bool shouldCarStop(float intersectionWidth, float duration);
-
-	Car(float speed, float positiveAcc, float negativeAcc, float distanceToIntersection);
 };
 

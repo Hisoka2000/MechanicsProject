@@ -1,27 +1,60 @@
 #include "Car.h"
+#include <iostream>
 #include <cmath>
+using namespace std;
 
-	Car::Car(float speed, float positiveAcc, float negativeAcc, float distanceToIntersection) {
-		this->speed = speed;
-		this->positiveAcc = positiveAcc;
-		this->negativeAcc = negativeAcc;
-		this->distanceToIntersection = distanceToIntersection;
-	}
 	float Car::getSpeed() {
 		return (speed * 1000)/3600;	//in m/s
+	}
+
+	void Car::setSpeed(float speed) {
+		while (speed < 20 || speed > 80) {
+			cout << "Speed has to be between 20 and 80 included" << endl;
+			cout << "Please enter a new value: ";
+			cin >> speed;
+		}
+		this->speed = speed;
+	}
+
+	float Car::getDistanceToIntersection() {
+		return distanceToIntersection;
+	}
+
+	void Car::setDistanceToIntersection(float distanceToIntersection) {
+		while (distanceToIntersection < 10 || distanceToIntersection > 150) {
+			cout << "Distance has to be between 10 and 150 included" << endl;
+			cout << "Please enter a new value: ";
+			cin >> distanceToIntersection;
+		}
+		this->distanceToIntersection = distanceToIntersection;
 	}
 
 	float Car::getPositiveAcc() {
 		return positiveAcc;
 	}
 
+	void Car::setPositiveAcc(float positivieAcc) {
+		while (positiveAcc < 1 || positiveAcc > 3) {
+			cout << "Positive acceleration has to be between 1 and 3 included" << endl;
+			cout << "Please enter a new value: ";
+			cin >> positiveAcc;
+		}
+		this->positiveAcc = positiveAcc;
+	}
+
 	float Car::getNegativeAcc() {
 		return negativeAcc;
 	}
 
-	float Car::getDistanceToIntersection() {
-		return distanceToIntersection;
+	void Car::setNegativeAcc(float negativeAcc) {
+		while (negativeAcc < 1 || negativeAcc > 3) {
+			cout << "Negative acceleration has to be between 1 and 3 included" << endl;
+			cout << "Please enter a new value: ";
+			cin >> negativeAcc;
+		}
+		this->negativeAcc = negativeAcc;
 	}
+
 
 	float Car::positiveDistance(float time) {
 		float distance = getSpeed() * time + (float)((getPositiveAcc() * sqrt(time)) / 2);
