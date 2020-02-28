@@ -33,7 +33,7 @@ using namespace std;
 		return positiveAcc;
 	}
 
-	void Car::setPositiveAcc(float positivieAcc) {
+	void Car::setPositiveAcc(float positiveAcc) {
 		while (positiveAcc < 1 || positiveAcc > 3) {
 			cout << "Positive acceleration has to be between 1 and 3 included" << endl;
 			cout << "Please enter a new value: ";
