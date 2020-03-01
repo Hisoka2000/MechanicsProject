@@ -115,5 +115,10 @@ namespace ProjectMechanics
 				return true;
 			}
 		}
+
+		public float currentSpeed(float initialSpeed, float time)
+		{
+			return initialSpeed + PositiveAcc * time;
+		}
 	}
 }
