@@ -90,9 +90,9 @@ namespace ProjectMechanics
 			}
 		}
 
-		public float positiveDistance(float time)
+		public float positiveDistance(float time, float acceleration)
 		{
-			float distance = Speed * time + ((PositiveAcc * (time * time)) / 2);
+			float distance = Speed * time + ((acceleration * (time * time)) / 2);
 			return distance;
 		}
 
@@ -106,7 +106,7 @@ namespace ProjectMechanics
 		public bool shouldCarStop(float intersectionWidth, float duration)
 		{
 			//If he can manage to pass in time or if there is no way he can stop till the intersection, can shouldnt stop. Else the car should stop
-			if ((positiveDistance(duration) >= DistanceToIntersection + intersectionWidth) || (negativeDistance() > DistanceToIntersection))
+			if ((positiveDistance(duration, PositiveAcc) >= DistanceToIntersection + intersectionWidth) || (negativeDistance() > DistanceToIntersection))
 			{
 				return false;
 			}
@@ -116,9 +116,9 @@ namespace ProjectMechanics
 			}
 		}
 
-		public float currentSpeed(float initialSpeed, float time)
+		public float currentSpeed(float initialSpeed, float time, float acceleration)
 		{
-			return initialSpeed + PositiveAcc * time;
+			return initialSpeed + acceleration * time;
 		}
 	}
 }
