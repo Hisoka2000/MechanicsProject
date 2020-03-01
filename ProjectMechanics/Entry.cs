@@ -23,37 +23,30 @@ namespace ProjectMechanics
 
         void ChartLoad()
         {
-            float speed;
-            float positiveAcc;
-            float negativeAcc;
-            float distanceToIntersection;
-            float width;
-            float duration;
             bool shouldStop;
+
 
             Car car = new Car();
             Intersection intersection = new Intersection();
 
-            Console.Write("Input the cars speed in km/h: ");
-            speed = float.Parse(Console.ReadLine());
-            car.Speed = speed;
+            //Inputs
+            Console.Write("Input cars maximum allowed speed in km/h (0 for no limit): ");
+            car.MaxSpeed = float.Parse(Console.ReadLine());
+            Console.Write("Input the cars initial speed in km/h: ");
+            car.Speed = float.Parse(Console.ReadLine());
             Console.Write("Input the cars constant positive acceleration in m/s^2: ");
-            positiveAcc = float.Parse(Console.ReadLine());
-            car.PositiveAcc = positiveAcc;
+            car.PositiveAcc = float.Parse(Console.ReadLine());
             Console.Write("Input the cars constant negative acceleration in m/s^2: ");
-            negativeAcc = float.Parse(Console.ReadLine());
-            car.NegativeAcc = negativeAcc;
+            car.NegativeAcc = float.Parse(Console.ReadLine());
             Console.Write("Input the cars distance to the intersection in meters: ");
-            distanceToIntersection = float.Parse(Console.ReadLine());
-            car.DistanceToIntersection = distanceToIntersection;
+            car.DistanceToIntersection = float.Parse(Console.ReadLine());
 
             Console.Write("Input the width of the intersection in meters: ");
-            width = float.Parse(Console.ReadLine());
-            intersection.Width = width;
+            intersection.Width = float.Parse(Console.ReadLine());
             Console.Write("Input the duration of the yellow light in seconds: ");
-            duration = float.Parse(Console.ReadLine());
-            intersection.Duration = duration;
+            intersection.Duration = float.Parse(Console.ReadLine());
 
+            //Logic
             if (car.shouldCarStop(intersection.Width, intersection.Duration))
             {
                 Console.WriteLine("The car should start decelerating to stop");
@@ -65,7 +58,7 @@ namespace ProjectMechanics
                 shouldStop = false;
             }
 
-
+            //Variables for charts
             var dtChart = chart1.ChartAreas[0];
             var sdChart = chart2.ChartAreas[0];
 
@@ -102,20 +95,40 @@ namespace ProjectMechanics
             chart2.Series["Speed-Distance"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             chart2.Series["Speed-Distance"].Color = Color.Blue;
 
-            for (float i = 0; i <= duration; i = (float)(i + 0.1))
+            float interval = 0.1f;
+            //Logic for adding values to chart
+            for (float i = 0; i <= intersection.Duration; i = (float)(i + interval))
             {
                 if (shouldStop)
                 {
-                    chart1.Series["Distance-Time"].Points.AddXY(i, car.positiveDistance(i, -negativeAcc));
-                    chart2.Series["Speed-Distance"].Points.AddXY(car.currentSpeed(speed, i, -negativeAcc), car.positiveDistance(i, -negativeAcc));
+                    chart1.Series["Distance-Time"].Points.AddXY(i, car.positiveDistance(i, -car.NegativeAcc));
+                    chart2.Series["Speed-Distance"].Points.AddXY(car.currentSpeed(car.Speed, i, -car.NegativeAcc), car.positiveDistance(i, -car.NegativeAcc));
                 }
                 else
                 {
-                    chart1.Series["Distance-Time"].Points.AddXY(i, car.positiveDistance(i, positiveAcc));
-                    chart2.Series["Speed-Distance"].Points.AddXY(car.currentSpeed(speed, i, positiveAcc), car.positiveDistance(i, positiveAcc));
+                    if(car.MaxSpeed == 0)
+                    {
+                        chart1.Series["Distance-Time"].Points.AddXY(i, car.positiveDistance(i, car.PositiveAcc));
+                        chart2.Series["Speed-Distance"].Points.AddXY(car.currentSpeed(car.Speed, i, car.PositiveAcc), car.positiveDistance(i, car.PositiveAcc));
+                    }
+                    else
+                    {
+                        if(car.currentSpeed(car.Speed, i, car.PositiveAcc) <= car.MaxSpeed)
+                        {
+                            chart1.Series["Distance-Time"].Points.AddXY(i, car.positiveDistance(i, car.PositiveAcc));
+                            chart2.Series["Speed-Distance"].Points.AddXY(car.currentSpeed(car.Speed, i, car.PositiveAcc), car.positiveDistance(i, car.PositiveAcc));
+                        }
+                        else
+                        {
+                            chart1.Series["Distance-Time"].Points.AddXY(i, car.distanceTillV(car.MaxSpeed) + car.MaxSpeed * interval);
+                            chart2.Series["Speed-Distance"].Points.AddXY(car.MaxSpeed, car.distanceTillV(car.MaxSpeed) + car.MaxSpeed * interval);
+                        }
+                    }
+
                 }
             }
         }
+
         public static void Main(string[] args)
         {
             displayGraph();
@@ -126,12 +139,15 @@ namespace ProjectMechanics
             #endif
         }
 
+        //Displays Graph
         public static void displayGraph()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Entry());
         }
+
+        //Autogenerated C# form code
         private void InitializeComponent()
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();

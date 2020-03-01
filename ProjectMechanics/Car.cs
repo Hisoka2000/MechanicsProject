@@ -14,6 +14,28 @@ namespace ProjectMechanics
 		private float distanceToIntersection = 0;
 		private float maxSpeed = 0;
 
+		public float MaxSpeed
+		{
+			get
+			{
+				return maxSpeed;
+			}
+
+			set
+			{
+				maxSpeed = value;
+				if(maxSpeed != 0)
+				{
+					while (maxSpeed < 50 || maxSpeed > 100)
+					{
+						Console.WriteLine("Max speed has to be between 50 and 100 included");
+						Console.Write("Please enter a new value: ");
+						maxSpeed = float.Parse(Console.ReadLine());
+					}
+				}
+			}
+		}
+
 		public float Speed
 		{
 			get
@@ -97,16 +119,29 @@ namespace ProjectMechanics
 		}
 
 		//v^2 = v0^2 + 2ax0 => Since (final velocity) v = 0, to get distance when decelerating
-		public float negativeDistance()
+		public float distanceTillV(float V)
 		{
-			float distance = -(Speed * Speed) / (2 * NegativeAcc);
+			float distance = ((V * V) - (Speed * Speed)) / (2 * NegativeAcc);
 			return distance;
 		}
 
 		public bool shouldCarStop(float intersectionWidth, float duration)
 		{
 			//If he can manage to pass in time or if there is no way he can stop till the intersection, can shouldnt stop. Else the car should stop
-			if ((positiveDistance(duration, PositiveAcc) >= DistanceToIntersection + intersectionWidth) || (negativeDistance() > DistanceToIntersection))
+			if (maxSpeed != 0)
+			{
+				float distanceTillConstant = distanceTillV(maxSpeed);
+				float remainingTime = (maxSpeed - Speed) / PositiveAcc;
+				if (distanceTillConstant + maxSpeed * remainingTime >= DistanceToIntersection + intersectionWidth || ((distanceTillV(0)) > DistanceToIntersection))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if ((positiveDistance(duration, PositiveAcc) >= DistanceToIntersection + intersectionWidth) || ((distanceTillV(0)) > DistanceToIntersection))
 			{
 				return false;
 			}
