@@ -8,15 +8,26 @@ namespace Final
 {
     class EntryPoint
     {
+
         public static void Main()
         {
-            System.Console.Out.WriteLine("Hello World");
 
 
-        #if DEBUG
-            Console.WriteLine("Press enter to close...");
-            Console.ReadLine();
-        #endif
+
+
+
+
+
+
+            closeMain();
+        }
+
+        private static void closeMain()
+        {
+            #if DEBUG
+                Console.WriteLine("Press enter to close...");
+                Console.ReadLine();
+            #endif
         }
     }
 }
