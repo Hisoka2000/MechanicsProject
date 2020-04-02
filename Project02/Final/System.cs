@@ -35,8 +35,8 @@ namespace Final
                     while(m[i] <= 0 || m[i] > 10)
                     {
                         Console.WriteLine("Masses need to be greater than 0 or less than or equal to 10");
-                        Console.Write("Please enter a new value for M" + i + ": ");
-                        m[i] = (int)Console.Read();
+                        Console.Write("Please enter a new value for M" + (i+1) + ": ");
+                        m[i] = float.Parse(Console.ReadLine());
                     }
                 }
             }
@@ -56,8 +56,8 @@ namespace Final
                     while (friction[i] < 0 || friction[i] > 0.5)
                     {
                         Console.WriteLine("Frictions need to be greater than or equal to 0 or less than or equal to 0.5");
-                        Console.Write("Please enter a new value for friction" + i + ": ");
-                        friction[i] = (int)Console.Read();
+                        Console.Write("Please enter a new value for friction mu" + (i+1) + ": ");
+                        friction[i] = float.Parse(Console.ReadLine());
                     }
                 }
             }
@@ -76,7 +76,7 @@ namespace Final
                 {
                     Console.WriteLine("Force needs to be greater than or equal to -300 or less than or equal to 300");
                     Console.Write("Please enter a new value for Force: ");
-                    force = (int)Console.Read();
+                    force = float.Parse(Console.ReadLine());
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace Final
                 {
                     Console.WriteLine("Time cannot be less than or equal to 0");
                     Console.Write("Please input a new value for time: ");
-                    time = (int)Console.Read();
+                    time = int.Parse(Console.ReadLine());
                 }
             }
         }
@@ -107,19 +107,37 @@ namespace Final
 
         public void solveSystem()
         {
+            float[] frictionForces = frictionForce();
+            float ropeTension = tension();
             float currentForce = 0;
-            float[] currentVelocity;
-            currentVelocity = new float[3] { 0, 0, 0 };
-            printPositions();
+            int direction = Math.Sign(currentForce);
+            float[,] currentVelocity = new float[,] { { 0, 0 }, { 0, 0 }, { 0, 0 } };
+            float[,] currentAcceleration = new float[,] { { 0, 0 }, { 0, 0 }, { 0, 0 } };
+
             for(int i = 0; i < time; i++)
             {
+                printPositions(i);
+                currentAcceleration[0, 0] = (currentForce - ropeTension + (-direction * frictionForces[0]))/m[0];
+                currentAcceleration[1, 0] = (ropeTension + (-direction * frictionForces[1])) / m[1];
+                currentAcceleration[2, 0] = -currentForce / m[2];
+                currentAcceleration[2, 1] = (ropeTension - m[2] * G - frictionForces[2]) / m[2];
 
+                position[0, 0] = Distance(currentVelocity[0, 0], currentAcceleration[0, 0]);
+                position[1, 0] = Distance(currentVelocity[1, 0], currentAcceleration[1, 0]);
+                position[2, 0] = Distance(currentVelocity[2, 0], currentAcceleration[2, 0]);
+                position[2, 1] = Distance(currentVelocity[2, 1], currentAcceleration[2, 1]);
+
+                currentForce = currentForce + force / time;
+                currentVelocity[0, 0] = finalVelocity(currentVelocity[0, 0], currentAcceleration[0, 0]);
+                currentVelocity[1, 0] = finalVelocity(currentVelocity[1, 0], currentAcceleration[1, 0]);
+                currentVelocity[2, 0] = finalVelocity(currentVelocity[2, 0], currentAcceleration[2, 0]);
+                currentVelocity[2, 1] = finalVelocity(currentVelocity[2, 1], currentAcceleration[2, 1]);
             }
         }
 
-        private void printPositions()
+        private void printPositions(int time)
         {
-            Console.WriteLine("Current positions: " + "M1" + "(" + position[0, 0] + ", " + position[0, 1] + ")" + " M2" + "(" + position[1, 0] + ", " + position[1, 1] + ")" + " M2" + "(" + position[2, 0] + ", " + position[2, 1] + ")");
+            Console.WriteLine("At t = " + time + " Current positions: " + "M1" + "(" + position[0, 0] + ", " + position[0, 1] + ") \t" + " M2" + "(" + position[1, 0] + ", " + position[1, 1] + ") \t" + " M3" + "(" + position[2, 0] + ", " + position[2, 1] + ")");
         }
 
         private float Distance(float initialVelocity, float acceleration)
