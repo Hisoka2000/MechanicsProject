@@ -14,6 +14,7 @@ namespace Final
         private float[] friction = new float[3];
         private float[,] position;
         private float force;
+        private int time;
 
         public System()
         {
@@ -76,6 +77,24 @@ namespace Final
                     Console.WriteLine("Force needs to be greater than or equal to -300 or less than or equal to 300");
                     Console.Write("Please enter a new value for Force: ");
                     force = (int)Console.Read();
+                }
+            }
+        }
+
+        public int Time
+        {
+            get
+            {
+                return time;
+            }
+            set
+            {
+                time = value;
+                if(time <= 0)
+                {
+                    Console.WriteLine("Time cannot be less than or equal to 0");
+                    Console.Write("Please input a new value for time: ");
+                    time = (int)Console.Read();
                 }
             }
         }
