@@ -98,5 +98,49 @@ namespace Final
                 }
             }
         }
+
+        public float tension()
+        {
+            float acceleration = (m[2] * G) / (m[2] + m[1]);
+            return m[1] * acceleration;
+        }
+
+        public void solveSystem()
+        {
+            float currentForce = 0;
+            float[] currentVelocity;
+            currentVelocity = new float[3] { 0, 0, 0 };
+            printPositions();
+            for(int i = 0; i < time; i++)
+            {
+
+            }
+        }
+
+        private void printPositions()
+        {
+            Console.WriteLine("Current positions: " + "M1" + "(" + position[0, 0] + ", " + position[0, 1] + ")" + " M2" + "(" + position[1, 0] + ", " + position[1, 1] + ")" + " M2" + "(" + position[2, 0] + ", " + position[2, 1] + ")");
+        }
+
+        private float Distance(float initialVelocity, float acceleration)
+        {
+            return initialVelocity + acceleration / 2; //since time = 1
+        }
+
+        private float finalVelocity(float initialVelocity, float acceleration)
+        {
+            return initialVelocity + acceleration; //since time = 1
+        }
+
+        private float[] frictionForce()
+        {
+            float[] forces;
+            forces = new float[3];
+            for(int i = 0; i < forces.Length; i++)
+            {
+                forces[i] = m[i] * G;
+            }
+            return forces;
+        }
     }
 }
