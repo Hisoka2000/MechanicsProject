@@ -12,7 +12,13 @@ namespace Final
 
         private float[] m = new float[3];
         private float[] friction = new float[3];
+        private float[,] position;
         private float force;
+
+        public System()
+        {
+            position = new float[,] { { 5, 7}, { 3, 7}, { 5, 6} };
+        }
 
         public float[] M
         {
